@@ -1,31 +1,52 @@
+// src/components/Sidebar.js
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Sidebar = ({ onLogout }) => {
+const Sidebar = ({ onLogout, role = 'admin' }) => {
   const linkClass = ({ isActive }) =>
-    `block p-2 rounded hover:bg-gray-700 ${isActive ? "bg-gray-700 font-bold" : ""}`;
+    `block px-4 py-2 rounded-md transition-colors ${
+      isActive ? 'bg-primary text-white font-semibold' : 'hover:bg-primaryLight'
+    }`;
+
+  const mentorLinks = [
+    { path: '/mentor/dashboard', label: 'Dashboard' },
+    { path: '/mentor/sessions', label: 'My Sessions' },
+    { path: '/mentor/payouts', label: 'Payouts' },
+  ];
+
+  const adminLinks = [
+    { path: '/dashboard', label: 'Dashboard' },
+    { path: '/user-management', label: 'User & Role Management' },
+    { path: '/course-management', label: 'Course Management' },
+    { path: '/session-scheduling', label: 'Session Scheduling' },
+    { path: '/student-activity', label: 'Student Activity' },
+    { path: '/communication-hub', label: 'Communication Hub' },
+    { path: '/payout-automation', label: 'Payout Automation System' },
+    { path: '/analytics-reports', label: 'Analytics and Reports' },
+    { path: '/platform-settings', label: 'Platform Settings' },
+  ];
+
+  const links = role === 'mentor' ? mentorLinks : adminLinks;
 
   return (
-    <nav className="w-64 h-screen bg-gray-800 text-white flex flex-col p-4">
-      <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
-      <ul className="flex flex-col gap-4 flex-grow">
-        <li><NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink></li>
-        <li><NavLink to="/user-management" className={linkClass}>User & Role Management</NavLink></li>
-        <li><NavLink to="/course-management" className={linkClass}>Course Management</NavLink></li>
-        <li><NavLink to="/session-scheduling" className={linkClass}>Session Scheduling</NavLink></li>
-        <li><NavLink to="/student-activity" className={linkClass}>Student Activity</NavLink></li>
-        <li><NavLink to="/communication-hub" className={linkClass}>Communication Hub</NavLink></li>
-        <li><NavLink to="/payout-automation" className={linkClass}>Payout Automation System</NavLink></li>
-        <li><NavLink to="/analytics-reports" className={linkClass}>Analytics and Reports</NavLink></li>
-        <li><NavLink to="/platform-settings" className={linkClass}>Platform Settings</NavLink></li>
+    <div className="w-64 h-screen bg-primaryDark text-white flex flex-col p-4 shadow-lg">
+      <h2 className="text-xl font-bold mb-6">{role === 'mentor' ? 'Mentor' : 'Admin'} Panel</h2>
+      <ul className="space-y-2 flex-grow">
+        {links.map((item) => (
+          <li key={item.path}>
+            <NavLink to={item.path} className={linkClass}>{item.label}</NavLink>
+          </li>
+        ))}
       </ul>
-      <button
-        onClick={onLogout}
-        className="mt-auto bg-red-600 hover:bg-red-700 p-2 rounded"
-      >
-        Logout
-      </button>
-    </nav>
+      {onLogout && (
+        <button
+          onClick={onLogout}
+          className="mt-auto bg-coral hover:bg-red-600 px-4 py-2 rounded text-white"
+        >
+          Logout
+        </button>
+      )}
+    </div>
   );
 };
 
