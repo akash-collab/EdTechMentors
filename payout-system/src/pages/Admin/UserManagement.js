@@ -1,7 +1,8 @@
+// src/pages/Admin/UserManagement.js
 import React from 'react';
 
-const DashboardPage = () => {
-  return <h1>User Management Page</h1>;
+const UserManagement = () => {
+  return <h2>User Management Page</h2>;
 };
 
-export default DashboardPage;
+export default UserManagement;
