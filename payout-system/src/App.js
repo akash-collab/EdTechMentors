@@ -1,12 +1,26 @@
 // src/App.js
-import React from "react";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import AdminDashboard from '../src/components/AdminDashboard';
+import DashboardPage from './pages/Admin/DashboardPage';
+import UserManagement from './pages/Admin/UserManagement';
+import CourseManagement from './pages/Admin/CourseManagement';
+// ... import other pages similarly
 
-function App() {
+const App = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <h1 className="text-3xl font-bold text-teal-700">EdTech Mentor Payout System</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/*" element={<AdminDashboard />}>
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="user-management" element={<UserManagement />} />
+          <Route path="course-management" element={<CourseManagement />} />
+          {/* add other routes here */}
+        </Route>
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
