@@ -21,7 +21,7 @@ const Sidebar = ({ onLogout, role = 'admin' }) => {
     { path: '/session-scheduling', label: 'Session Scheduling' },
     { path: '/student-activity', label: 'Student Activity' },
     { path: '/communication-hub', label: 'Communication Hub' },
-    { path: '/payout-automation', label: 'Payout Automation System' },
+    { path: '/payouts', label: 'Payout Automation System' },
     { path: '/analytics-reports', label: 'Analytics and Reports' },
     { path: '/platform-settings', label: 'Platform Settings' },
   ];
