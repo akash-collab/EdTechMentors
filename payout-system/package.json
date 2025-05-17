@@ -2,6 +2,8 @@
   "dependencies": {
     "@tailwindcss/cli": "^4.1.7",
     "firebase": "^11.7.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-router-dom": "^6.30.0",
     "react-scripts": "^5.0.1"
   },
