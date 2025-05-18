@@ -128,6 +128,13 @@ Firebase Authentication
 
 Usage
 
+Sample Email: a@gmail.com
+Sample Password : 123456
+
+Sample Email : b@gmail.com
+Sample Passowrd : 123456
+
+
 Admin Dashboard
 	•	Login as Admin
 	•	View list of mentors
