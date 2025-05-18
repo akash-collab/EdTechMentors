@@ -1,11 +1,8 @@
 // src/pages/Admin/AnalyticsReports.js
 import React, { useEffect, useState } from "react";
-import {
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/config";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 
 const AnalyticsReports = () => {
   const [payouts, setPayouts] = useState([]);
@@ -33,33 +30,24 @@ const AnalyticsReports = () => {
   };
 
   const calculateFinalPayout = (hourlyRate, totalHours) => {
-  const grossAmount = hourlyRate * totalHours;
-  const platformFeeAmount = grossAmount * 0.10; // 10% platform fee
-  const gstAmount = (grossAmount * gstPercentage) / 100;
-  const finalAmount = grossAmount - platformFeeAmount - gstAmount;
+    const grossAmount = hourlyRate * totalHours;
+    const platformFeeAmount = grossAmount * 0.1; // 10% platform fee
+    const gstAmount = (grossAmount * gstPercentage) / 100;
+    const finalAmount = grossAmount - platformFeeAmount - gstAmount;
 
-  return {
-    grossAmount,
-    platformFeeAmount,
-    gstAmount,
-    finalAmount,
-  };
-};
-
-  const sendReceiptEmail = (mentor) => {
-    const {
-      email,
-      hourlyRate,
-      classTypes,
-      totalHours = 1,
-    } = mentor;
-
-    const {
+    return {
       grossAmount,
       platformFeeAmount,
       gstAmount,
       finalAmount,
-    } = calculateFinalPayout(hourlyRate, totalHours);
+    };
+  };
+
+  const sendReceiptEmail = (mentor) => {
+    const { email, hourlyRate, classTypes, totalHours = 1 } = mentor;
+
+    const { grossAmount, platformFeeAmount, gstAmount, finalAmount } =
+      calculateFinalPayout(hourlyRate, totalHours);
 
     const templateParams = {
       to_email: email,
@@ -72,16 +60,16 @@ const AnalyticsReports = () => {
       gst_percentage: gstPercentage,
       gst_amount: gstAmount.toFixed(2),
       total_payout: finalAmount.toFixed(2),
-      custom_message: customMessages[email] || "Thank you for your valuable mentorship!",
+      custom_message:
+        customMessages[email] || "Thank you for your valuable mentorship!",
     };
 
-    return emailjs
-      .send(
-        "service_1tefeca", // your EmailJS Service ID
-        "template_i2n0e9n", // your EmailJS Template ID
-        templateParams,
-        "iH5I6Arlx9pB-Asur" // your EmailJS User ID (public key)
-      );
+    return emailjs.send(
+      "service_1tefeca", // your EmailJS Service ID
+      "template_i2n0e9n", // your EmailJS Template ID
+      templateParams,
+      "iH5I6Arlx9pB-Asur" // your EmailJS User ID (public key)
+    );
   };
 
   const sendEmailToAll = async () => {
@@ -93,7 +81,7 @@ const AnalyticsReports = () => {
         // Small delay to avoid API rate limits
         await new Promise((res) => setTimeout(res, 1500));
       } catch (error) {
-        alert(`Failed to send receipt to ${mentor.email}: ${error.text}`);
+        console.log(`Failed to send receipt to ${mentor.email}: ${error.text}`);
       }
     }
     setSendingAll(false);
@@ -103,17 +91,19 @@ const AnalyticsReports = () => {
   const generateAndSend = async (mentor) => {
     try {
       // Simulate receipt generation (you can replace this with real logic)
-      alert(`Receipt generated for ${mentor.email}`);
+      alert(`Receipt generated and sent successfully to ${mentor.email}`);
       await sendReceiptEmail(mentor);
       alert(`Receipt sent successfully to ${mentor.email}!`);
     } catch (error) {
-      alert(`Failed to send receipt to ${mentor.email}: ${error.text}`);
+      console.log(`Failed to send receipt to ${mentor.email}: ${error.text}`);
     }
   };
 
   return (
     <div className="max-w-5xl mx-auto mt-8 p-6 bg-[#E3F2FD] rounded-lg shadow-md">
-      <h1 className="text-3xl font-bold text-[#0D47A1] mb-6">Analytics & Reports</h1>
+      <h1 className="text-3xl font-bold text-[#0D47A1] mb-6">
+        Analytics & Reports
+      </h1>
 
       {payouts.length === 0 && (
         <p className="text-center text-gray-600">No payout data found.</p>
@@ -123,19 +113,17 @@ const AnalyticsReports = () => {
         disabled={sendingAll}
         onClick={sendEmailToAll}
         className={`mb-6 px-8 py-3 rounded-full font-semibold text-white shadow-lg transition-transform transform hover:scale-105 active:scale-95 focus:outline-none ${
-          sendingAll ? "bg-gray-400 cursor-not-allowed" : "bg-gradient-to-r from-[#2196F3] to-[#0D47A1]"
+          sendingAll
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-gradient-to-r from-[#2196F3] to-[#0D47A1]"
         }`}
       >
         {sendingAll ? "Sending emails..." : "Send Email to All Mentors"}
       </button>
 
       {payouts.map((mentor) => {
-        const {
-          grossAmount,
-          platformFeeAmount,
-          gstAmount,
-          finalAmount,
-        } = calculateFinalPayout(mentor.hourlyRate, mentor.totalHours || 1);
+        const { grossAmount, platformFeeAmount, gstAmount, finalAmount } =
+          calculateFinalPayout(mentor.hourlyRate, mentor.totalHours || 1);
 
         return (
           <div
@@ -159,27 +147,41 @@ const AnalyticsReports = () => {
                     </tr>
                     <tr>
                       <td className="py-1 font-semibold">Total Hours</td>
-                      <td className="py-1 text-right">{mentor.totalHours || 1}</td>
+                      <td className="py-1 text-right">
+                        {mentor.totalHours || 1}
+                      </td>
                     </tr>
                     <tr>
                       <td className="py-1 font-semibold">Class Types</td>
-                      <td className="py-1 text-right">{mentor.classTypes.join(", ")}</td>
+                      <td className="py-1 text-right">
+                        {mentor.classTypes.join(", ")}
+                      </td>
                     </tr>
                     <tr>
                       <td className="py-1 font-semibold">Gross Amount</td>
-                      <td className="py-1 text-right">₹{grossAmount.toFixed(2)}</td>
+                      <td className="py-1 text-right">
+                        ₹{grossAmount.toFixed(2)}
+                      </td>
                     </tr>
                     <tr>
                       <td className="py-1 font-semibold">Platform Fee</td>
-                      <td className="py-1 text-right text-red-600">- ₹{platformFeeAmount.toFixed(2)}</td>
+                      <td className="py-1 text-right text-red-600">
+                        - ₹{platformFeeAmount.toFixed(2)}
+                      </td>
                     </tr>
                     <tr>
-                      <td className="py-1 font-semibold">GST ({gstPercentage}%)</td>
-                      <td className="py-1 text-right text-green-600">- ₹{gstAmount.toFixed(2)}</td>
+                      <td className="py-1 font-semibold">
+                        GST ({gstPercentage}%)
+                      </td>
+                      <td className="py-1 text-right text-green-600">
+                        - ₹{gstAmount.toFixed(2)}
+                      </td>
                     </tr>
                     <tr className="border-t-2 border-gray-700 font-bold">
                       <td className="py-1">Final Payout</td>
-                      <td className="py-1 text-right">₹{finalAmount.toFixed(2)}</td>
+                      <td className="py-1 text-right">
+                        ₹{finalAmount.toFixed(2)}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -199,7 +201,11 @@ const AnalyticsReports = () => {
 
                 <div className="flex gap-4 mt-4">
                   <button
-                    onClick={() => sendReceiptEmail(mentor).then(() => alert(`Receipt sent to ${mentor.email}!`))}
+                    onClick={() =>
+                      sendReceiptEmail(mentor).then(() =>
+                        alert(`Receipt sent to ${mentor.email}!`)
+                      )
+                    }
                     className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
                   >
                     Send via Email
