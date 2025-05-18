@@ -37,7 +37,7 @@ A secure, flexible, and auditable payout automation platform for EdTech companie
 ---
 
 ## Deployed App
-Frontend: [https://edtechmentors.vercel.app/](https://edtechmentors.vercel.app/)  
+Frontend: [https://ed-tech-mentors-hmxysa16v-akash-collabs-projects.vercel.app/login](https://ed-tech-mentors-hmxysa16v-akash-collabs-projects.vercel.app/login)  
 Backend: Firebase (Firestore, Auth, Functions)  
 Database: [https://console.firebase.google.com/](https://console.firebase.google.com/)
 
